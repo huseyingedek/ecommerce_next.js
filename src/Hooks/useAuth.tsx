@@ -34,7 +34,7 @@ const useAuth = () => {
 
   const login = async (submitData: { email: string; password: string }) => {
     try {
-      const response = await axios.post<LoginResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, submitData);
+      const response = await axios.post<LoginResponse>(`${process.env.NEXT_PUBLIC_API_URL || "https://e-ticaretbe.onrender.com"}/api/auth/login`, submitData);
 
       const { accessToken, refreshToken, accessTokenExpiresAt, user } = response.data;
 
@@ -72,7 +72,7 @@ const useAuth = () => {
 
   const register = async (submitData: { name: string; lastName: string; email: string; password: string; phone: string; }) => {
     try {
-      const response = await axios.post<RegisterResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, submitData);
+      const response = await axios.post<RegisterResponse>(`${process.env.NEXT_PUBLIC_API_URL || "https://e-ticaretbe.onrender.com"}/api/auth/register`, submitData);
       message.success(response.data.message);
       router.push("/");
     } catch (error) {
@@ -119,7 +119,7 @@ const useAuth = () => {
     }
 
     try {
-      const response = await axios.post<{ user: any }>(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`, { token });
+      const response = await axios.post<{ user: any }>(`${process.env.NEXT_PUBLIC_API_URL || "https://e-ticaretbe.onrender.com"}/api/auth/check`, { token });
       dispatch(loginUser({ token, refreshToken: getCookie("refreshToken") || "", user: response.data.user }));
       return true;
     } catch (error) {
