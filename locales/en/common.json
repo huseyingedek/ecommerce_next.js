@@ -1,16 +1,3 @@
 {
-    "Ana Sayfa": "Home",
-    "Çıkış": "Logout",
-    "Soru Havuzu": "Question Pool",
-    "Ödevler": "Assignments",
-    "Eğitimlerim": "My Courses",
-    "Canlı Ders": "Live Class",
-    "calisma-plani": "Study Plan (2 Weeks)",
-    "calismalarim": "My Studies",
-    "netlerim": "My Scores",
-    "dijital-karne": "Digital Report Card",
-    "hedeflerim": "My Goals",
-    "egitim-paketleri": "Education Packages",
-    "show-name": "Show Name"
-  }
-  
+  "home": "Home"
+}

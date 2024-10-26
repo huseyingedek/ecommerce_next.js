@@ -1,16 +1,3 @@
 {
-    "Ana Sayfa": "Ana Sayfa",
-    "Çıkış": "Çıkış",
-    "Soru Havuzu": "Soru Havuzu",
-    "Ödevler": "Ödevler",
-    "Eğitimlerim": "Eğitimlerim",
-    "Canlı Ders": "Canlı Ders",
-    "calisma-plani": "Çalışma Planı (2 Haftalık)",
-    "calismalarim": "Çalışmalarım",
-    "netlerim": "Netlerim",
-    "dijital-karne": "Dijital Karne",
-    "hedeflerim": "Hedeflerim",
-    "egitim-paketleri": "Eğitim Paketleri",
-    "show-name": "İsmi Göster"
-  }
-  
+  "home": "Ana Sayfa"
+}
