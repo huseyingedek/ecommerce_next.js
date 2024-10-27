@@ -5,7 +5,7 @@ module.exports = nextTranslate({
   poweredByHeader: false,
   reactStrictMode: false,
   images: {
-    domains: ['picsum.photos', '8f08a8.cdn.akinoncloud.com'],
+    domains: ['picsum.photos', 'firebasestorage.googleapis.com', 'storage.googleapis.com'],
   },
   eslint: {
     ignoreDuringBuilds: true,

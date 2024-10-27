@@ -25,7 +25,7 @@ const useFetchApi = <T>(apiPath?: string): FetchReturn<T> => {
   });
 
   const fetchApi = async (apiPathFirst?: string, headers?: Record<string, string>) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://e-ticaretbe.onrender.com";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     
     setResponseData(prevState => ({ ...prevState, loading: true }));
 

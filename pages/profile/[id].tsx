@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import { UserOutlined, HomeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { ProfileForm } from '@/Core/index';
 import { useRouter } from 'next/router';
+import { getCookie } from "cookies-next";
 
 type TabPosition = 'left' | 'right' | 'top' | 'bottom';
 
@@ -10,8 +11,14 @@ const Profile: React.FC = () => {
     const [tabPosition, setTabPosition] = useState<TabPosition>('left');
     const router = useRouter();
     const { id } = router.query;
+    const token = getCookie("token");
 
     useEffect(() => {
+
+        if (!token) {
+            router.push('/');
+        }
+
         const handleResize = () => {
             if (window.innerWidth <= 768) {
                 setTabPosition('top');
@@ -29,7 +36,7 @@ const Profile: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (!id) {
+        if (!id ) {
             router.push('/');
         }
     }, [id, router]);

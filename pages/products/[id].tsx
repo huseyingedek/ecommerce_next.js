@@ -11,7 +11,7 @@ interface Product {
   name: string;
   price: number;
   description: string;
-  image: string;
+  images: string[];
   isActive: boolean;
   stock: number;
 }
@@ -20,7 +20,7 @@ const ProductsDetails = () => {
   const router = useRouter();
   const { id } = router.query;
   const [getPackages, response] = useFetchApi<Product>("/api/products/" + id);
-  const [selectedImage, setSelectedImage] = useState('/images/products/2.jpg');
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const ProductsDetails = () => {
 
   useEffect(() => {
     if (response) {
-      setSelectedImage(response.image);
+      setSelectedImage(response.images[0]);
     }
   }, [response]);
 
@@ -47,28 +47,36 @@ const ProductsDetails = () => {
         name: response.name,
         price: response.price,
         quantity,
-        image: response.image,
+        image: selectedImage || '',
       }));
       console.log(`Added ${quantity} items to the cart`);
     }
   };
-
   return (
     <div className='mb-48 px-4 md:px-16 lg:px-28'>
       <div className='flex flex-col md:flex-row'>
         <div className='flex-1 h-auto'>
-          <Image src={selectedImage} alt="product" width={500} height={500} className='rounded-lg cursor-pointer max-w-lg w-full h-auto' />
+          {selectedImage && (
+            <Image src={selectedImage} alt="product" width={500} height={500} className='rounded-lg cursor-pointer max-w-lg w-full h-auto' />
+          )}
           <div className='flex gap-x-4 pt-4 pb-5 overflow-x-auto'>
-            <Image src={response?.image || '/images/products/2.jpg'} alt="product" width={500} height={500} className='rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200 w-20 h-20' onClick={() => handleImageClick(response?.image || '/images/products/2.jpg')} />
-            <Image src='/images/products/3.jpg' alt="product" width={500} height={500} className='rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200 w-20 h-20' onClick={() => handleImageClick('/images/products/3.jpg')} />
-            <Image src='/images/products/2.jpg' alt="product" width={500} height={500} className='rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200 w-20 h-20' onClick={() => handleImageClick('/images/products/2.jpg')} />
-            <Image src='/images/products/1.jpg' alt="product" width={500} height={500} className='rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200 w-20 h-20' onClick={() => handleImageClick('/images/products/1.jpg')} />
+            {response?.images.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                alt="product"
+                width={500}
+                height={500}
+                className='rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200 w-20 h-20'
+                onClick={() => handleImageClick(image)}
+              />
+            ))}
           </div>
         </div>
         <div className='md:pl-5 flex-1 mr-52 w-full'>
           <h1 className='text-4xl font-bold pb-3'>{response?.name}</h1>
           <p className='text-lg pb-5 text-gray-500'>{response?.description}</p>
-          <span className='text-4xl'>{response?.price}$</span>
+          <span className='text-4xl'>{response?.price}₺</span>
           <div>
             <h2 className='text-2xl font-semibold mt-10'>Boyut</h2>
             <div className='flex gap-x-4 mt-4'>
