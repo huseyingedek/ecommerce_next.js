@@ -22,26 +22,43 @@ const BestSellers: React.FC = () => {
   }, []);
 
   const activeProducts = products?.filter(product => product.isActive);
-  console.log(activeProducts);
+
   return (
-    <div className='mt-5 mb-5 md:mx-16'>
-      <div className='flex justify-center text-center flex-col items-center mb-4'>
-        <h1 className='text-4xl text-teal-600'>En Çok Satanlar</h1>
-        <p className='text-base text-teal-800'>En Popüler Ürünlerimiz</p>
+    <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-36 py-8 md:py-12">
+      <div className="text-center mb-8 md:mb-10">
+        <h1 className="text-3xl md:text-4xl font-bold text-teal-600 mb-2">En Çok Satanlar</h1>
+        <div className="w-24 h-1 bg-teal-600 mx-auto mb-3"></div>
+        <p className="text-base md:text-lg text-teal-800">En Popüler Ürünlerimiz</p>
       </div>
-      <div className='flex justify-center flex-wrap mt-5 mb-7 gap-5'>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 xl:gap-8">
         {activeProducts && activeProducts.length > 0 ? (
           activeProducts.map((product: Product) => (
-            <div key={product._id} className='h-72 w-40 xs:w-1/2 sm:w-1/2 md:w-1/5 lg:w-1/6 bg-white text-center transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200'>
-              <Link href={`/products/${product._id}`}>
-                <Image src={product.images[0]} alt="görsel yüklenemedi" width={200} height={208} className='pb-5 rounded h-52 w-full cursor-pointer' />
-                <h1 className='pb-2 text-xl cursor-pointer'>{product.name}</h1>
-                <span>{product.price}$</span>
-              </Link>
-            </div>
+            <Link href={`/products/${product._id}`} key={product._id}>
+              <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full max-w-[220px] mx-auto w-full">
+                <div className="aspect-square relative">
+                  <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
+                    className="object-cover rounded-t-lg"
+                  />
+                </div>
+                <div className="p-2 sm:p-3">
+                  <h2 className="text-sm sm:text-base font-medium text-gray-800 mb-1 sm:mb-2 line-clamp-1 hover:text-teal-600 transition-colors">
+                    {product.name}
+                  </h2>
+                  <p className="text-base sm:text-lg font-bold text-teal-600">
+                    ${product.price.toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+            </Link>
           ))
         ) : (
-          <p>No products found</p>
+          <div className="col-span-full text-center py-8 text-gray-500">
+            Ürün bulunamadı
+          </div>
         )}
       </div>
     </div>

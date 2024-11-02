@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/Redux/store';
 import { useAuth } from '@/Hooks/index';
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,60 +103,124 @@ const Header = () => {
             </div>
             <nav className='hidden md:flex justify-center space-x-10 pb-5'>
                 <div className='relative group'>
-                    <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
-                        T-shirt
-                    </a>
-                    <ul className='absolute left-0 hidden group-hover:block bg-white shadow-md w-40'>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>T-shirt 1</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>T-shirt 2</a></li>
-                    </ul>
+                    <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item>
+                                <a href="#">T-shirt 1</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">T-shirt 2</a>
+                            </Menu.Item>
+                        </Menu>
+                    } trigger={['hover']}>
+                        <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
+                            T-shirt <DownOutlined className='w-3'/>
+                        </a>
+                    </Dropdown>
                 </div>
                 <div className='relative group'>
-                    <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>Ayakkabı</a>
-                    <ul className='absolute left-0 hidden group-hover:block bg-white shadow-md w-40'>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Ayakkabı 1</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Ayakkabı 2</a></li>
-                    </ul>
+                    <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item>
+                                <a href="#">Ayakkabı 1</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">Ayakkabı 2</a>
+                            </Menu.Item>
+                        </Menu>
+                    } trigger={['hover']}>
+                        <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
+                            Ayakkabı <DownOutlined className='w-3'/>
+                        </a>
+                    </Dropdown>
                 </div>
                 <div className='relative group'>
-                    <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>Şort</a>
-                    <ul className='absolute left-0 hidden group-hover:block bg-white shadow-md w-40'>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Şort 1</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Şort 2</a></li>
-                    </ul>
+                    <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item>
+                                <a href="#">Şort 1</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">Şort 2</a>
+                            </Menu.Item>
+                        </Menu>
+                    } trigger={['hover']}>
+                        <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
+                            Şort <DownOutlined className='w-3'/>
+                        </a>
+                    </Dropdown>
                 </div>
                 <div className='relative group'>
-                    <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>Pantolon</a>
-                    <ul className='absolute left-0 hidden group-hover:block bg-white shadow-md w-40'>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Pantolon 1</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Pantolon 2</a></li>
-                    </ul>
+                    <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item>
+                                <a href="#">Pantolon 1</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">Pantolon 2</a>
+                            </Menu.Item>
+                        </Menu>
+                    } trigger={['hover']}>
+                        <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
+                            Pantolon <DownOutlined className='w-3'/>
+                        </a>
+                    </Dropdown>
                 </div>
                 <div className='relative group'>
-                    <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>Çorap</a>
-                    <ul className='absolute left-0 hidden group-hover:block bg-white shadow-md w-40'>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Çorap 1</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Çorap 2</a></li>
-                    </ul>
+                    <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item>
+                                <a href="#">Çorap 1</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">Çorap 2</a>
+                            </Menu.Item>
+                        </Menu>
+                    } trigger={['hover']}>
+                        <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
+                            Çorap <DownOutlined className='w-3'/>
+                        </a>
+                    </Dropdown>
                 </div>
                 <div className='relative group'>
-                    <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>Hizmetler</a>
-                    <ul className='absolute left-0 hidden group-hover:block bg-white shadow-md w-40'>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Hizmet 1</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Hizmet 2</a></li>
-                        <li><a href="#" className='block px-4 py-3 hover:text-black hover:bg-teal-400'>Hizmet 3</a></li>
-                    </ul>
+                    <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item>
+                                <a href="#">Hizmet 1</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">Hizmet 2</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href="#">Hizmet 3</a>
+                            </Menu.Item>
+                        </Menu>
+                    } trigger={['hover']}>
+                        <a href="#" className='text-black hover:text-teal-400 text-lg mb-2'>
+                            Hizmetler <DownOutlined className='w-3'/>
+                        </a>
+                    </Dropdown>
                 </div>
             </nav>
 
             {isMenuOpen && (
-                <nav className='flex flex-col items-center md:hidden bg-white py-2'>
-                    <ul className='flex flex-col gap-y-2'>
-                        <li><a href="#" className='text-black text-lg hover:text-teal-400'>Anasayfa</a></li>
-                        <li><a href="#" className='text-black text-lg hover:text-teal-400'>Ürün Kategorileri</a></li>
-                        <li><a href="#" className='text-black text-lg hover:text-teal-400'>Alt Kategoriler</a></li>
-                        <li><a href="#" className='text-black text-lg hover:text-teal-400'>Hakkında</a></li>
-                        <li><a href="#" className='text-black text-lg hover:text-teal-400'>İletişim</a></li>
+                <nav className='flex flex-col md:hidden bg-white py-2 absolute top-full left-0 w-full shadow-lg transform transition-all duration-300 ease-in-out'>
+                    <ul className='flex flex-col'>
+                        <li className='border-b border-gray-100 last:border-none'>
+                            <a href="#" className='block px-6 py-3 text-black hover:bg-teal-50 hover:text-teal-400 transition-colors duration-200'>Anasayfa</a>
+                        </li>
+                        <li className='border-b border-gray-100 last:border-none'>
+                            <a href="#" className='block px-6 py-3 text-black hover:bg-teal-50 hover:text-teal-400 transition-colors duration-200'>Ürün Kategorileri</a>
+                        </li>
+                        <li className='border-b border-gray-100 last:border-none'>
+                            <a href="#" className='block px-6 py-3 text-black hover:bg-teal-50 hover:text-teal-400 transition-colors duration-200'>Alt Kategoriler</a>
+                        </li>
+                        <li className='border-b border-gray-100 last:border-none'>
+                            <a href="#" className='block px-6 py-3 text-black hover:bg-teal-50 hover:text-teal-400 transition-colors duration-200'>Hakkında</a>
+                        </li>
+                        <li className='border-b border-gray-100 last:border-none'>
+                            <a href="#" className='block px-6 py-3 text-black hover:bg-teal-50 hover:text-teal-400 transition-colors duration-200'>İletişim</a>
+                        </li>
                     </ul>
                 </nav>
             )}
