@@ -9,6 +9,7 @@ const { Title } = Typography;
 const Cart = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
+    console.log(dispatch)
 
     const handleRemoveItem = (id: string) => {
         dispatch(removeItem(id));

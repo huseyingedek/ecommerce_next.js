@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Select, Space, Button, Radio } from 'antd';
+import { Tabs, Button, Radio } from 'antd';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useFetchApi } from '@/Hooks/index';
 import { useDispatch } from 'react-redux';
 import { addItem } from '@/Redux/slices/cartSlice';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Loading } from '@/Core/index'
+import { Loading } from '@/Core/index';
 
 interface Product {
   _id: string;
@@ -16,9 +16,18 @@ interface Product {
   images: string[];
   isActive: boolean;
   stock: number;
-  color: string;
-  size: string;
+  colors: string[]; // API'den gelen renkleri temsil eder
+  sizes: string[];
 }
+
+// Renk isimlerini ve renk kodlarını eşleştirin
+const colorMapping: Record<string, string> = {
+  'Kırmızı': '#FF0000',
+  'Mavi': '#0000FF',
+  'Yeşil': '#008000',
+  'Siyah': '#000000',
+  'Beyaz': '#FFFFFF',
+};
 
 const ProductsDetails: React.FC = () => {
   const router = useRouter();
@@ -32,21 +41,12 @@ const ProductsDetails: React.FC = () => {
       setError(err);
     },
   });
+
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSize, setSelectedSize] = useState<string>('M');
-  const [selectedColor, setSelectedColor] = useState<string>('black');
+  const [selectedColor, setSelectedColor] = useState<string>('');
   const dispatch = useDispatch();
-
-  const colors = [
-    { value: 'black', label: 'Siyah', color: '#000000' },
-    { value: 'white', label: 'Beyaz', color: '#FFFFFF' },
-    { value: 'red', label: 'Kırmızı', color: '#FF0000' },
-    { value: 'blue', label: 'Mavi', color: '#0000FF' },
-    { value: 'green', label: 'Yeşil', color: '#008000' },
-  ];
-
-  const sizes = ['S', 'M', 'L', 'XL'];
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -69,6 +69,8 @@ const ProductsDetails: React.FC = () => {
   useEffect(() => {
     if (response) {
       setSelectedImage(response.images[0]);
+      setSelectedSize(response.sizes[0]);
+      setSelectedColor(response.colors[0]);
     }
   }, [response]);
 
@@ -92,8 +94,8 @@ const ProductsDetails: React.FC = () => {
         price: response.price,
         quantity,
         image: selectedImage || '',
-        size: selectedSize,
-        color: selectedColor,
+        sizes: selectedSize,
+        colors: selectedColor,
       }));
       console.log(`Added ${quantity} items to the cart`);
     }
@@ -110,7 +112,6 @@ const ProductsDetails: React.FC = () => {
   return (
     <div className='mb-48 px-4 md:px-8 lg:px-16 xl:px-28'>
       <div className='flex flex-col md:flex-row gap-8'>
-        {/* Sol Taraf - Ürün Görselleri */}
         <div className='flex-1 md:max-w-[500px]'>
           {selectedImage && (
             <div className='relative w-full'>
@@ -143,13 +144,11 @@ const ProductsDetails: React.FC = () => {
           </div>
         </div>
 
-        {/* Sağ Taraf - Ürün Detayları */}
         <div className='flex-1 md:pl-8'>
           <h1 className='text-3xl md:text-4xl font-bold pb-3'>{response?.name}</h1>
           <p className='text-base md:text-lg pb-5 text-gray-500'>{response?.description}</p>
           <span className='text-3xl md:text-4xl font-semibold'>{response?.price}₺</span>
 
-          {/* Renk Seçimi */}
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Renk</h2>
             <Radio.Group
@@ -157,23 +156,21 @@ const ProductsDetails: React.FC = () => {
               onChange={e => setSelectedColor(e.target.value)}
               className='flex flex-wrap gap-3'
             >
-              {colors.map(color => (
+              {response?.colors.map(color => (
                 <Radio.Button
-                  key={color.value}
-                  value={color.value}
+                  key={color}
+                  value={color}
                   className='flex items-center gap-2 p-2'
                 >
                   <span
                     className='w-6 h-6 rounded-full border border-gray-300'
-                    style={{ backgroundColor: color.color }}
                   />
-                  <span>{color.label}</span>
+                  {color}
                 </Radio.Button>
               ))}
             </Radio.Group>
           </div>
 
-          {/* Boyut Seçimi */}
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Boyut</h2>
             <Radio.Group
@@ -181,7 +178,7 @@ const ProductsDetails: React.FC = () => {
               onChange={e => setSelectedSize(e.target.value)}
               className='flex flex-wrap gap-3'
             >
-              {sizes.map(size => (
+              {response?.sizes.map(size => (
                 <Radio.Button
                   key={size}
                   value={size}
@@ -193,7 +190,6 @@ const ProductsDetails: React.FC = () => {
             </Radio.Group>
           </div>
 
-          {/* Adet Seçimi */}
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Adet</h2>
             <div className='flex items-center gap-4'>
@@ -220,7 +216,6 @@ const ProductsDetails: React.FC = () => {
             </div>
           </div>
 
-          {/* Sepete Ekle Butonu */}
           <Button
             type="primary"
             size="large"
@@ -232,7 +227,6 @@ const ProductsDetails: React.FC = () => {
         </div>
       </div>
 
-      {/* Tabs Bölümü */}
       <div className='mt-12'>
         <Tabs
           type="card"

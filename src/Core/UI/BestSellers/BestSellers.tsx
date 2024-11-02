@@ -51,7 +51,7 @@ const BestSellers: React.FC = () => {
                     {product.name}
                   </h2>
                   <p className="text-base sm:text-lg font-bold text-teal-600">
-                    ${product.price.toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                    {product.price.toLocaleString('tr-TR', { minimumFractionDigits: 2 })}₺
                   </p>
                 </div>
               </div>
