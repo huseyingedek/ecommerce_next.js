@@ -6,6 +6,7 @@ import { useFetchApi } from '@/Hooks/index';
 import { useDispatch } from 'react-redux';
 import { addItem } from '@/Redux/slices/cartSlice';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Loading } from '@/Core/index'
 
 interface Product {
   _id: string;
@@ -15,16 +16,26 @@ interface Product {
   images: string[];
   isActive: boolean;
   stock: number;
+  color: string;
+  size: string;
 }
 
-const ProductsDetails = () => {
+const ProductsDetails: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [getPackages, response] = useFetchApi<Product>("/api/products/" + id);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [getPackages, response] = useFetchApi<Product>("/api/products/" + id, {
+    onSuccess: () => setLoading(false),
+    onError: (err: string) => {
+      setLoading(false);
+      setError(err);
+    },
+  });
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
-  const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('M');
-  const [selectedColor, setSelectedColor] = useState('black');
+  const [quantity, setQuantity] = useState<number>(1);
+  const [selectedSize, setSelectedSize] = useState<string>('M');
+  const [selectedColor, setSelectedColor] = useState<string>('black');
   const dispatch = useDispatch();
 
   const colors = [
@@ -38,8 +49,20 @@ const ProductsDetails = () => {
   const sizes = ['S', 'M', 'L', 'XL'];
 
   useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        await getPackages();
+      } catch (err) {
+        setError("Failed to fetch product");
+        console.error("Failed to fetch product:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (id) {
-      getPackages();
+      fetchProduct();
     }
   }, [id]);
 
@@ -76,6 +99,14 @@ const ProductsDetails = () => {
     }
   };
 
+  if (loading) {
+    return <div><Loading /></div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className='mb-48 px-4 md:px-8 lg:px-16 xl:px-28'>
       <div className='flex flex-col md:flex-row gap-8'>
@@ -83,9 +114,9 @@ const ProductsDetails = () => {
         <div className='flex-1 md:max-w-[500px]'>
           {selectedImage && (
             <div className='relative w-full'>
-              <Image 
-                src={selectedImage} 
-                alt="product" 
+              <Image
+                src={selectedImage}
+                alt="product"
                 width={500}
                 height={500}
                 className='rounded-lg object-cover w-full h-auto'
@@ -95,7 +126,7 @@ const ProductsDetails = () => {
           )}
           <div className='flex gap-3 pt-4 overflow-x-auto scrollbar-hide'>
             {response?.images.map((image, index) => (
-              <div 
+              <div
                 key={index}
                 className='relative w-20 h-20 flex-shrink-0'
               >
@@ -121,19 +152,19 @@ const ProductsDetails = () => {
           {/* Renk Seçimi */}
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Renk</h2>
-            <Radio.Group 
+            <Radio.Group
               value={selectedColor}
               onChange={e => setSelectedColor(e.target.value)}
               className='flex flex-wrap gap-3'
             >
               {colors.map(color => (
-                <Radio.Button 
-                  key={color.value} 
+                <Radio.Button
+                  key={color.value}
                   value={color.value}
                   className='flex items-center gap-2 p-2'
                 >
-                  <span 
-                    className='w-6 h-6 rounded-full border border-gray-300' 
+                  <span
+                    className='w-6 h-6 rounded-full border border-gray-300'
                     style={{ backgroundColor: color.color }}
                   />
                   <span>{color.label}</span>
@@ -145,14 +176,14 @@ const ProductsDetails = () => {
           {/* Boyut Seçimi */}
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Boyut</h2>
-            <Radio.Group 
+            <Radio.Group
               value={selectedSize}
               onChange={e => setSelectedSize(e.target.value)}
               className='flex flex-wrap gap-3'
             >
               {sizes.map(size => (
-                <Radio.Button 
-                  key={size} 
+                <Radio.Button
+                  key={size}
                   value={size}
                   className='min-w-[60px] text-center'
                 >
@@ -167,7 +198,7 @@ const ProductsDetails = () => {
             <h2 className='text-xl font-semibold mb-4'>Adet</h2>
             <div className='flex items-center gap-4'>
               <div className='flex items-center border rounded-md'>
-                <Button 
+                <Button
                   type="text"
                   icon={<MinusOutlined />}
                   onClick={() => handleQuantityChange('decrease')}
@@ -175,7 +206,7 @@ const ProductsDetails = () => {
                   className='border-0'
                 />
                 <span className='px-4 min-w-[50px] text-center'>{quantity}</span>
-                <Button 
+                <Button
                   type="text"
                   icon={<PlusOutlined />}
                   onClick={() => handleQuantityChange('increase')}
@@ -190,8 +221,8 @@ const ProductsDetails = () => {
           </div>
 
           {/* Sepete Ekle Butonu */}
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             size="large"
             className='mt-8 w-full md:w-auto px-8'
             onClick={handleAddToCart}

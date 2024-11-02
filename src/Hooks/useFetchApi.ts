@@ -17,7 +17,12 @@ interface ApiResponse {
   message: string;
 }
 
-const useFetchApi = <T>(apiPath?: string): FetchReturn<T> => {
+interface UseFetchApiOptions<T> {
+  onSuccess?: (data: T) => void;
+  onError?: (error: string) => void;
+}
+
+const useFetchApi = <T>(apiPath?: string, options?: UseFetchApiOptions<T>): FetchReturn<T> => {
   const [responseData, setResponseData] = useState<FetchApiState<T>>({
     loading: false,
     error: null,
@@ -26,7 +31,7 @@ const useFetchApi = <T>(apiPath?: string): FetchReturn<T> => {
 
   const fetchApi = async (apiPathFirst?: string, headers?: Record<string, string>) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    
+
     setResponseData(prevState => ({ ...prevState, loading: true }));
 
     if (!apiPath && !apiPathFirst) {
@@ -43,13 +48,20 @@ const useFetchApi = <T>(apiPath?: string): FetchReturn<T> => {
     try {
       const response: AxiosResponse<T> = await axios(requestOptions);
       setResponseData({ data: response.data, error: null, loading: false });
+      if (options?.onSuccess) {
+        options.onSuccess(response.data);
+      }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
+      const errorMessage = axiosError.response?.data?.message || axiosError.message || "An unknown error occurred.";
       setResponseData({
         data: null,
-        error: axiosError.response?.data?.message || axiosError.message || "An unknown error occurred.",
+        error: errorMessage,
         loading: false,
       });
+      if (options?.onError) {
+        options.onError(errorMessage);
+      }
     }
   };
 

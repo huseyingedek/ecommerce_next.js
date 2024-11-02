@@ -10,6 +10,8 @@ interface Product {
   price: number;
   stock: number;
   images: string[];
+  color: string;
+  size: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

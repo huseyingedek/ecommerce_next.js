@@ -7,4 +7,6 @@ export { default as BestSellers } from "@/Core/UI/BestSellers";
 export { default as Carousel } from "@/Core/UI/Carousel";
 export { default as StoreSection } from "@/Core/UI/StoreSection";
 export { default as ProfileForm } from "@/Core/UI/ProfileForm";
+export { default as Loading } from "@/Core/UI/Loading";
+
 
