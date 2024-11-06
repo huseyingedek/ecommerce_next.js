@@ -16,18 +16,9 @@ interface Product {
   images: string[];
   isActive: boolean;
   stock: number;
-  colors: string[]; // API'den gelen renkleri temsil eder
+  colors: string[];
   sizes: string[];
 }
-
-// Renk isimlerini ve renk kodlarını eşleştirin
-const colorMapping: Record<string, string> = {
-  'Kırmızı': '#FF0000',
-  'Mavi': '#0000FF',
-  'Yeşil': '#008000',
-  'Siyah': '#000000',
-  'Beyaz': '#FFFFFF',
-};
 
 const ProductsDetails: React.FC = () => {
   const router = useRouter();
