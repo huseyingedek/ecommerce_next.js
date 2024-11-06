@@ -127,7 +127,7 @@ const ProductsDetails: React.FC = () => {
                   alt="product"
                   fill
                   className={`rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-200 object-cover
-                    ${selectedImage === image ? 'ring-2 ring-blue-500' : ''}`}
+                    ${selectedImage === image ? 'ring-2 ring-teal-500' : ''}`}
                   onClick={() => handleImageClick(image)}
                 />
               </div>
@@ -137,8 +137,8 @@ const ProductsDetails: React.FC = () => {
 
         <div className='flex-1 md:pl-8'>
           <h1 className='text-3xl md:text-4xl font-bold pb-3'>{response?.name}</h1>
-          <p className='text-base md:text-lg pb-5 text-gray-500'>{response?.description}</p>
-          <span className='text-3xl md:text-4xl font-semibold'>{response?.price}₺</span>
+          {/* <p className='text-base md:text-lg pb-5 text-gray-500'>{response?.description}</p> */}
+          <span className='text-3xl md:text-4xl font-semibold text-teal-600'>{response?.price}₺</span>
 
           <div className='mt-8'>
             <h2 className='text-xl font-semibold mb-4'>Renk</h2>
@@ -221,38 +221,32 @@ const ProductsDetails: React.FC = () => {
       <div className='mt-12'>
         <Tabs
           type="card"
+          className="custom-tabs"
           items={[
             {
               label: 'Ürün Açıklaması',
               key: '1',
               children: (
-                <>
-                  <h2 className='text-2xl font-semibold'>Ürün Açıklaması</h2>
-                  <p className='text-lg mt-4 text-gray-500'>{response?.description}</p>
-                </>
+                <div className="p-6 bg-white rounded-lg shadow-sm">
+                  <h2 className='text-2xl font-semibold text-teal-700'>Ürün Açıklaması</h2>
+                  <p className='text-lg mt-4 text-gray-600'>{response?.description}</p>
+                </div>
               ),
             },
             {
               label: 'Yorumlar',
               key: '2',
               children: (
-                <>
-                  <h2 className='text-2xl font-semibold'>Yorumlar</h2>
-                  <p className='text-lg mt-4 text-gray-500'>Burada kullanıcı yorumları yer alacak.</p>
-                </>
-              ),
-            },
-            {
-              label: 'Video',
-              key: '3',
-              children: (
-                <>
-                  <h2 className='text-2xl font-semibold'>Video</h2>
-                  <p className='text-lg mt-4 text-gray-500'>Burada ürünle ilgili video yer alacak.</p>
-                </>
+                <div className="p-6 bg-white rounded-lg shadow-sm">
+                  <h2 className='text-2xl font-semibold text-teal-700'>Yorumlar</h2>
+                  <p className='text-lg mt-4 text-gray-600'>Burada kullanıcı yorumları yer alacak.</p>
+                </div>
               ),
             },
           ]}
+          style={{
+            '--ant-primary-color': '#0d9488',
+          } as React.CSSProperties}
         />
       </div>
     </div>

@@ -1,0 +1,29 @@
+.ant-btn-primary {
+    background-color: #0d9488 !important;
+  }
+  
+  .ant-btn-primary:hover {
+    background-color: #0f766e !important;
+  }
+  
+  .ant-btn-primary:focus {
+    background-color: #0f766e !important;
+  }
+  
+  .ant-btn-primary:active {
+    background-color: #115e59 !important;
+  }
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background: transparent !important;
+    border-color: #0d9488 !important;
+    color: #0d9488 !important;
+  }
+  
+  .ant-radio-button-wrapper:hover {
+    color: #0d9488 !important;
+  }
+  
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: #0d9488 !important;
+  }
