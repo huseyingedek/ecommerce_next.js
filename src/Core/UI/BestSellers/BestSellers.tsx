@@ -59,7 +59,7 @@ const BestSellers: React.FC = () => {
                 active:translate-y-0 active:shadow-md 
                 transition-all duration-300 h-full max-w-[220px] 
                 mx-auto w-full relative
-                ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}
+                // ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}
               `}>
                 <div className="aspect-square relative">
                   <Image
@@ -80,11 +80,11 @@ const BestSellers: React.FC = () => {
                 </div>
               </div>
 
-              {clickedProductId === product._id && (
+              {/* {clickedProductId === product._id && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
                 </div>
-              )}
+              )} */}
             </Link>
           ))
         ) : (
