@@ -27,13 +27,8 @@ const BestSellers: React.FC = () => {
     fetchProducts();
   }, []);
 
-  const activeProducts = products?.filter(product => product.isActive);
-
-  const handleProductClick = async (productId: string, e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleProductClick = (productId: string) => {
     setClickedProductId(productId);
-    await router.push(`/products/${productId}`);
-    setClickedProductId(null);
   };
 
   return (
@@ -50,17 +45,19 @@ const BestSellers: React.FC = () => {
             <Link 
               href={`/products/${product._id}`} 
               key={product._id}
-              onClick={(e) => handleProductClick(product._id, e)}
-              className="relative block"
+              passHref
             >
-              <div className={`
-                bg-white rounded-lg overflow-hidden
-                shadow-sm hover:shadow-xl hover:-translate-y-1 
-                active:translate-y-0 active:shadow-md 
-                transition-all duration-300 h-full max-w-[220px] 
-                mx-auto w-full relative
-                ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}
-              `}>
+              <div
+                className={`
+                  relative block bg-white rounded-lg overflow-hidden
+                  shadow-sm hover:shadow-xl hover:-translate-y-1 
+                  active:translate-y-0 active:shadow-md 
+                  transition-all duration-300 h-full max-w-[220px] 
+                  mx-auto w-full
+                  ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}
+                `}
+                onClick={() => handleProductClick(product._id)}
+              >
                 <div className="aspect-square relative">
                   <Image
                     src={product.images[0]}
