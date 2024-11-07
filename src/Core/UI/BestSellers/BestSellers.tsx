@@ -23,6 +23,8 @@ const BestSellers: React.FC = () => {
   const [clickedProductId, setClickedProductId] = useState<string | null>(null);
   const router = useRouter();
 
+  const activeProducts = products?.filter(product => product.isActive);
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -40,22 +42,20 @@ const BestSellers: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 xl:gap-8">
-        {products && products.length > 0 ? (
-          products.map((product: Product) => (
+        {activeProducts && activeProducts.length > 0 ? (
+          activeProducts.map((product: Product) => (
             <Link 
               href={`/products/${product._id}`} 
               key={product._id}
               passHref
             >
               <div
-                className={`
-                  relative block bg-white rounded-lg overflow-hidden
+                className={`relative block bg-white rounded-lg overflow-hidden
                   shadow-sm hover:shadow-xl hover:-translate-y-1 
                   active:translate-y-0 active:shadow-md 
                   transition-all duration-300 h-full max-w-[220px] 
                   mx-auto w-full
-                  ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}
-                `}
+                  ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}`}
                 onClick={() => handleProductClick(product._id)}
               >
                 <div className="aspect-square relative">
@@ -64,7 +64,7 @@ const BestSellers: React.FC = () => {
                     alt={product.name}
                     fill
                     className="object-cover rounded-t-lg"
-                    priority={products.indexOf(product) < 5}
+                    priority={activeProducts.indexOf(product) < 5}
                   />
                 </div>
                 <div className="p-2 sm:p-3">
