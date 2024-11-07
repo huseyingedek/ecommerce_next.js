@@ -47,13 +47,9 @@ const BestSellers: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 xl:gap-8">
         {products && products.length > 0 ? (
           products.map((product: Product) => (
-            <Link 
-              href={`/products/${product._id}`} 
-              key={product._id}
-              onClick={(e) => handleProductClick(product._id, e)}
-              className="relative block"
-            >
-              <div className={`
+
+
+            <div className={`
                 bg-white rounded-lg overflow-hidden
                 shadow-sm hover:shadow-xl hover:-translate-y-1 
                 active:translate-y-0 active:shadow-md 
@@ -61,7 +57,13 @@ const BestSellers: React.FC = () => {
                 mx-auto w-full relative
                 // ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}
               `}>
-                <div className="aspect-square relative">
+              <div className="aspect-square relative">
+                <Link
+                  href={`/products/${product._id}`}
+                  key={product._id}
+                  onClick={(e) => handleProductClick(product._id, e)}
+                  className="relative block"
+                >
                   <Image
                     src={product.images[0]}
                     alt={product.name}
@@ -69,28 +71,24 @@ const BestSellers: React.FC = () => {
                     className="object-cover rounded-t-lg"
                     priority={products.indexOf(product) < 5}
                   />
-                </div>
-                <div className="p-2 sm:p-3">
-                  <h2 className="text-sm sm:text-base font-medium text-gray-800 mb-1 sm:mb-2 line-clamp-1 hover:text-teal-600 transition-colors">
-                    {product.name}
-                  </h2>
-                  <p className="text-base sm:text-lg font-bold text-teal-600">
-                    {product.price.toLocaleString('tr-TR', { minimumFractionDigits: 2 })}₺
-                  </p>
-                </div>
+                </Link>
               </div>
+              <div className="p-2 sm:p-3">
+                <h2 className="text-sm sm:text-base font-medium text-gray-800 mb-1 sm:mb-2 line-clamp-1 hover:text-teal-600 transition-colors">
+                  {product.name}
+                </h2>
+                <p className="text-base sm:text-lg font-bold text-teal-600">
+                  {product.price.toLocaleString('tr-TR', { minimumFractionDigits: 2 })}₺
+                </p>
+              </div>
+            </div>
 
-              {/* {clickedProductId === product._id && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
-                </div>
-              )} */}
-            </Link>
+              
           ))
         ) : (
-          <div className="col-span-full text-center py-8 text-gray-500">
-            Ürün bulunamadı
-          </div>
+        <div className="col-span-full text-center py-8 text-gray-500">
+          Ürün bulunamadı
+        </div>
         )}
       </div>
     </div>
