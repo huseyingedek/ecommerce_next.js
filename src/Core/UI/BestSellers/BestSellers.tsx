@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useFetchApi } from '@/Hooks/index';
-import { useRouter } from 'next/router';
 
 interface Product {
   _id: string;
@@ -20,18 +19,12 @@ interface Product {
 
 const BestSellers: React.FC = () => {
   const [fetchProducts, products] = useFetchApi<Product[]>("/api/products/");
-  const [clickedProductId, setClickedProductId] = useState<string | null>(null);
-  const router = useRouter();
 
   const activeProducts = products?.filter(product => product.isActive);
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  const handleProductClick = (productId: string) => {
-    setClickedProductId(productId);
-  };
 
   return (
     <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-36 py-8 md:py-12">
@@ -53,9 +46,7 @@ const BestSellers: React.FC = () => {
                   shadow-sm hover:shadow-xl hover:-translate-y-1 
                   active:translate-y-0 active:shadow-md 
                   transition-all duration-300 h-full max-w-[220px] 
-                  mx-auto w-full
-                  ${clickedProductId === product._id ? 'opacity-50' : 'opacity-100'}`}
-                onClick={() => handleProductClick(product._id)}
+                  mx-auto w-full`}
               >
                 <div className="aspect-square relative">
                   <Image
@@ -75,12 +66,6 @@ const BestSellers: React.FC = () => {
                   </p>
                 </div>
               </div>
-
-              {clickedProductId === product._id && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
-                </div>
-              )}
             </Link>
           ))
         ) : (
