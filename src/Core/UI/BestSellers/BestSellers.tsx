@@ -47,7 +47,6 @@ const BestSellers: React.FC = () => {
             <Link 
               href={`/products/${product._id}`} 
               key={product._id}
-              passHref
             >
               <div
                 className={`relative block bg-white rounded-lg overflow-hidden
