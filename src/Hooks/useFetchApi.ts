@@ -3,15 +3,8 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 
 type FetchReturn<T> = [
   (apiPathFirst?: string, headers?: Record<string, string>) => Promise<void>,
-  T | null,
-  boolean
+  T | null
 ];
-
-interface FetchApiState<T> {
-  loading: boolean;
-  data: T | null;
-  error: string | null;
-}
 
 interface ApiResponse {
   message: string;
@@ -23,20 +16,13 @@ interface UseFetchApiOptions<T> {
 }
 
 const useFetchApi = <T>(apiPath?: string, options?: UseFetchApiOptions<T>): FetchReturn<T> => {
-  const [responseData, setResponseData] = useState<FetchApiState<T>>({
-    loading: false,
-    error: null,
-    data: null,
-  });
+  const [responseData, setResponseData] = useState<T | null>(null);
 
   const fetchApi = async (apiPathFirst?: string, headers?: Record<string, string>) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    setResponseData(prevState => ({ ...prevState, loading: true }));
-
     if (!apiPath && !apiPathFirst) {
-      setResponseData({ data: null, error: "API path is required.", loading: false });
-      return;
+      throw new Error("API path is required.");
     }
 
     const requestOptions = {
@@ -47,25 +33,21 @@ const useFetchApi = <T>(apiPath?: string, options?: UseFetchApiOptions<T>): Fetc
 
     try {
       const response: AxiosResponse<T> = await axios(requestOptions);
-      setResponseData({ data: response.data, error: null, loading: false });
+      setResponseData(response.data);
       if (options?.onSuccess) {
         options.onSuccess(response.data);
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data?.message || axiosError.message || "An unknown error occurred.";
-      setResponseData({
-        data: null,
-        error: errorMessage,
-        loading: false,
-      });
       if (options?.onError) {
         options.onError(errorMessage);
       }
+      throw error;
     }
   };
 
-  return [fetchApi, responseData.data, responseData.loading];
+  return [fetchApi, responseData];
 };
 
 export default useFetchApi;
