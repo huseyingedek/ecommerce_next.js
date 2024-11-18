@@ -54,7 +54,6 @@ const BestSellers: React.FC = () => {
                     alt={product.name}
                     fill
                     className="object-cover rounded-t-lg"
-                    priority={activeProducts.indexOf(product) < 5}
                   />
                 </div>
                 <div className="p-2 sm:p-3">
