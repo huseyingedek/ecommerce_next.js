@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Button, Radio } from 'antd';
+import { Tabs, Button, Radio, Skeleton } from 'antd';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useFetchApi } from '@/Hooks/index';
 import { useDispatch } from 'react-redux';
 import { addItem } from '@/Redux/slices/cartSlice';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Loading } from '@/Core/index';
 
 interface Product {
   _id: string;
@@ -19,6 +18,28 @@ interface Product {
   colors: string[];
   sizes: string[];
 }
+
+const ProductSkeleton: React.FC = () => (
+  <div className='flex flex-col md:flex-row gap-8'>
+    <div className='flex-1 md:max-w-[500px]'>
+      <Skeleton.Image className="w-full h-[500px] rounded-lg" active />
+      <div className='flex gap-3 pt-4'>
+        {[1, 2, 3, 4].map(i => (
+          <Skeleton.Image key={i} className="w-20 h-20 rounded-lg" active />
+        ))}
+      </div>
+    </div>
+    
+    <div className='flex-1 md:pl-8'>
+      <Skeleton.Input className="mb-3" size="large" block active />
+      <Skeleton.Input className="mb-5" size="large" block active />
+      <Skeleton paragraph={{ rows: 4 }} active />
+      <div className='mt-8'>
+        <Skeleton.Button className="w-full md:w-auto" size="large" active />
+      </div>
+    </div>
+  </div>
+);
 
 const ProductsDetails: React.FC = () => {
   const router = useRouter();
@@ -40,19 +61,15 @@ const ProductsDetails: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      try {
-        await getPackages();
-      } catch (err) {
-        setError("Failed to fetch product");
-        console.error("Failed to fetch product:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (id) {
+      const fetchProduct = async () => {
+        try {
+          await getPackages();
+        } catch (err) {
+          setError("Ürün yüklenirken bir hata oluştu");
+          console.error("Ürün yükleme hatası:", err);
+        }
+      };
       fetchProduct();
     }
   }, [id]);
@@ -88,18 +105,24 @@ const ProductsDetails: React.FC = () => {
         sizes: selectedSize,
         colors: selectedColor,
       }));
-      console.log(`Added ${quantity} items to the cart`);
     }
   };
 
-  if (loading) {
-    return <div><Loading /></div>;
-  }
-
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <h2 className="text-2xl font-semibold text-red-600 mb-4">Bir Hata Oluştu</h2>
+        <p className="text-gray-600 mb-4">{error}</p>
+        <Button onClick={() => router.reload()} type="primary">
+          Tekrar Dene
+        </Button>
+      </div>
+    );
   }
 
+  if (loading) {
+    return <ProductSkeleton />;
+  }
   return (
     <div className='mb-48 px-4 md:px-8 lg:px-16 xl:px-28'>
       <div className='flex flex-col md:flex-row gap-8'>
