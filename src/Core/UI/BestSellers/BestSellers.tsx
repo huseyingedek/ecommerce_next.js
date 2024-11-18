@@ -17,14 +17,29 @@ interface Product {
   updatedAt: string;
 }
 
+const ProductSkeleton = () => (
+  <div className="animate-pulse bg-gray-200 rounded-lg overflow-hidden">
+    <div className="aspect-square bg-gray-300"></div>
+    <div className="p-2 sm:p-3">
+      <div className="h-4 bg-gray-300 mb-2 w-3/4"></div>
+      <div className="h-4 bg-gray-300 w-1/2"></div>
+    </div>
+  </div>
+);
+
 const BestSellers: React.FC = () => {
   const [fetchProducts, products] = useFetchApi<Product[]>("/api/products/");
-
-  const activeProducts = products?.filter(product => product.isActive);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProducts();
+    const loadProducts = async () => {
+      await fetchProducts();
+      setLoading(false);
+    };
+    loadProducts();
   }, []);
+
+  const activeProducts = products?.filter(product => product.isActive) || [];
 
   return (
     <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-36 py-8 md:py-12">
@@ -35,11 +50,17 @@ const BestSellers: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 xl:gap-8">
-        {activeProducts && activeProducts.length > 0 ? (
+        {loading ? (
+          Array.from({ length: 5 }).map((_, index) => (
+            <ProductSkeleton key={index} />
+          ))
+        ) : activeProducts.length > 0 ? (
           activeProducts.map((product: Product) => (
             <Link 
               href={`/products/${product._id}`} 
               key={product._id}
+              prefetch
+              className="block"
             >
               <div
                 className={`relative block bg-white rounded-lg overflow-hidden
@@ -53,6 +74,7 @@ const BestSellers: React.FC = () => {
                     src={product.images[0]}
                     alt={product.name}
                     fill
+                    loading="lazy"
                     className="object-cover rounded-t-lg"
                   />
                 </div>
